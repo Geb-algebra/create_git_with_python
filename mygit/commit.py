@@ -1,7 +1,10 @@
-import os
-import hashlib
-import glob
-from util import *
+from util import (
+    read_file,
+    generate_hash,
+    save_git_object,
+    get_last_commit,
+    set_last_commit,
+)
 
 # 複数回コミットを禁止する
 # 以前のコミットのtreeのハッシュとindexのハッシュが等しかったら禁止
@@ -14,15 +17,13 @@ from util import *
 # treeを保存
 text = read_file("git/index")
 tree_hash = generate_hash(text)
-# last_commit_hash = get_hash_content(get_ref())
-# if tree_hash == last_commit_hash:
 
-save_file(tree_hash, text)
+save_git_object(tree_hash, text)
 
-commit_object = f"tree {tree_hash}\nparent {get_ref()}"
+commit_object = f"tree {tree_hash}\nparent {get_last_commit()}"
 
 # commit objectを保存
 commit_hash = generate_hash(commit_object)
-set_ref(commit_hash)
+set_last_commit(commit_hash)
 
-save_file(commit_hash, commit_object)
+save_git_object(commit_hash, commit_object)

@@ -15,14 +15,14 @@ def read_file(file_name):
     return text
 
 
-def save_file(file_name, content):
+def save_git_object(file_name, content):
     if not os.path.exists(file_name):
         os.makedirs("git/objects", exist_ok=True)
         with open("git/objects/" + file_name, "w") as f:
             f.write(content)
 
 
-def save_index(tree_dict):
+def write_index(tree_dict):
     content = ""
     for name, hash_ in tree_dict.items():
         content += f"{name} {hash_}\n"
@@ -31,13 +31,13 @@ def save_index(tree_dict):
         f.write(content)
 
 
-def get_branch():
+def get_current_branch():
     with open("git/HEAD", "r") as f:
         branch_path = f.read()
     return branch_path
 
 
-def set_branch(branch):
+def set_current_branch(branch):
     branch_path = f"git/refs/{branch}"
     if not os.path.exists(branch_path):
         raise Exception(f"branch {branch} does not exist")
@@ -45,14 +45,14 @@ def set_branch(branch):
         f.write(branch_path)
 
 
-def get_ref():
-    branch_path = get_branch()
+def get_last_commit():
+    branch_path = get_current_branch()
     with open(branch_path, mode="r") as f:
         last_commit_hash = f.read()
     return last_commit_hash
 
 
-def set_ref(content):
-    branch_path = get_branch()
+def set_last_commit(last_commit_hash):
+    branch_path = get_current_branch()
     with open(branch_path, mode="w") as f:
-        f.write(content)
+        f.write(last_commit_hash)

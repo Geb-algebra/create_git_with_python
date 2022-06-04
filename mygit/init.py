@@ -1,7 +1,4 @@
 import os
-import hashlib
-import glob
-from util import *
 
 if os.path.exists("git"):
     raise Exception("git already exists")

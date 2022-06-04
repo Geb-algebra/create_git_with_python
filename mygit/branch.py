@@ -1,14 +1,12 @@
-import os
-import hashlib
-import glob
-from util import *
 import argparse
+
+from util import get_last_commit, set_current_branch
 
 
 def branch(branch_name):
     with open(f"git/refs/{branch_name}", mode="w") as f:
-        f.write(get_ref())
-    set_branch(branch_name)
+        f.write(get_last_commit())
+    set_current_branch(branch_name)
 
 
 if __name__ == "__main__":
