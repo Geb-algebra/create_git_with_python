@@ -2,7 +2,7 @@ import os
 import hashlib
 
 
-def generate_hash(content):
+def generate_hash(content: str):
     m = hashlib.sha256()
     m.update(content.encode())
     hash_ = m.hexdigest()

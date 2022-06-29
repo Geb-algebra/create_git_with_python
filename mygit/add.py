@@ -1,9 +1,9 @@
-import glob
+from pathlib import Path
 from util import read_file, generate_hash, save_git_object, write_index
 
 
-# file_names = ["test/file_in_test.txt"]
-file_names = glob.glob("**/*.txt", recursive=True)
+# get all files under the root dir
+file_names = [p for p in Path(".").glob("**/*") if p.is_file()]
 print(file_names)
 file_hash = {}
 for file_name in file_names:
