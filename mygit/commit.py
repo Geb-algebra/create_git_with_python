@@ -15,15 +15,15 @@ from util import (
 
 
 # treeを保存
-text = read_file("git/index")
-tree_hash = generate_hash(text)
-
-save_git_object(tree_hash, text)
+text = read_file("git/index")  # indexの内容をコピーして
+tree_hash = generate_hash(text)  # hash作って
+save_git_object(tree_hash, text)  # git/objectsに保存
 
 commit_object = f"tree {tree_hash}\nparent {get_last_commit()}"
+# treeと直前commitの内容を記述 (これが新しいcommit)
 
-# commit objectを保存
-commit_hash = generate_hash(commit_object)
-set_last_commit(commit_hash)
+commit_hash = generate_hash(commit_object)  # 作ったcommitのhash作って
+save_git_object(commit_hash, commit_object)  # git/objectsに保存
 
-save_git_object(commit_hash, commit_object)
+set_last_commit(commit_hash)  # git/refs/{ブランチ名} に最新コミットのhashを書く
+

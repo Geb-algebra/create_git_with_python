@@ -3,7 +3,8 @@ import hashlib
 
 
 def generate_hash(content: str):
-    m = hashlib.sha256()
+    """ファイルの中身 (content) からhash生成"""
+    m = hashlib.sha1()
     m.update(content.encode())
     hash_ = m.hexdigest()
     return hash_
@@ -16,6 +17,7 @@ def read_file(file_name):
 
 
 def save_git_object(file_name, content):
+    """ファイル名file_name, 内容contentのファイルをgit/objectsに保存"""
     if not os.path.exists(file_name):
         os.makedirs("git/objects", exist_ok=True)
         with open("git/objects/" + file_name, "w") as f:
@@ -23,6 +25,7 @@ def save_git_object(file_name, content):
 
 
 def write_index(tree_dict):
+    """ファイル一覧をgit/indexに記述"""
     content = ""
     for name, hash_ in tree_dict.items():
         content += f"{name} {hash_}\n"
@@ -32,12 +35,14 @@ def write_index(tree_dict):
 
 
 def get_current_branch():
+    """git/HEADから今のブランチ名を読んでくる"""
     with open("git/HEAD", "r") as f:
         branch_path = f.read()
     return branch_path
 
 
 def set_current_branch(branch):
+    """git/HEADにブランチ名を書いてブランチ設定"""
     branch_path = f"git/refs/{branch}"
     if not os.path.exists(branch_path):
         raise Exception(f"branch {branch} does not exist")
@@ -46,6 +51,7 @@ def set_current_branch(branch):
 
 
 def get_last_commit():
+    """現ブランチの最新コミットを読んでくる"""
     branch_path = get_current_branch()
     with open(branch_path, mode="r") as f:
         last_commit_hash = f.read()
@@ -53,6 +59,7 @@ def get_last_commit():
 
 
 def set_last_commit(last_commit_hash):
+    """現ブランチの最新コミットを設定"""
     branch_path = get_current_branch()
     with open(branch_path, mode="w") as f:
         f.write(last_commit_hash)
